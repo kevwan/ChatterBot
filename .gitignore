@@ -20,3 +20,4 @@ docs/_build/
 *.iml
 
 examples/settings.py
+chatterbot/corpus/data
