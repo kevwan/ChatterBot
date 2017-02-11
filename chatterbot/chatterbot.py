@@ -9,26 +9,13 @@ import logging
 
 
 class ChatBot(object):
-
     def __init__(self, name, **kwargs):
         self.name = name
         kwargs['name'] = name
-
-        storage_adapter = kwargs.get('storage_adapter',
-            'chatterbot.adapters.storage.JsonFileStorageAdapter'
-        )
-
-        logic_adapters = kwargs.get('logic_adapters', [
-            'chatterbot.adapters.logic.ClosestMatchAdapter'
-        ])
-
-        input_adapter = kwargs.get('input_adapter',
-            'chatterbot.adapters.input.VariableInputTypeAdapter'
-        )
-
-        output_adapter = kwargs.get('output_adapter',
-            'chatterbot.adapters.output.OutputFormatAdapter'
-        )
+        storage_adapter = kwargs.get('storage_adapter', 'chatterbot.adapters.storage.JsonFileStorageAdapter')
+        logic_adapters = kwargs.get('logic_adapters', ['chatterbot.adapters.logic.ClosestMatchAdapter'])
+        input_adapter = kwargs.get('input_adapter', 'chatterbot.adapters.input.VariableInputTypeAdapter')
+        output_adapter = kwargs.get('output_adapter', 'chatterbot.adapters.output.OutputFormatAdapter')
 
         # The last 10 statement inputs and outputs
         self.recent_statements = ResponseQueue(maxsize=10)
@@ -236,7 +223,7 @@ class ChatBot(object):
         return self.trainer.train
 
     @classmethod
-    def from_config(self, config_file_path):
+    def from_config(cls, config_file_path):
         import json
         with open(config_file_path, 'r') as config_file:
             data = json.load(config_file)
@@ -246,7 +233,6 @@ class ChatBot(object):
         return ChatBot(name, **data)
 
     class InvalidAdapterException(Exception):
-
         def __init__(self, value='Recieved an unexpected adapter setting.'):
             self.value = value
 

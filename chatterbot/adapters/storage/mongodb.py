@@ -1,6 +1,7 @@
 from chatterbot.adapters.storage import StorageAdapter
 from chatterbot.conversation import Statement, Response
 from pymongo import MongoClient
+from pymongo.errors import BulkWriteError
 
 
 class Query(object):
@@ -198,7 +199,10 @@ class MongoDatabaseAdapter(StorageAdapter):
                 )
                 operations.append(update_operation)
 
-            self.statements.bulk_write(operations, ordered=False)
+            try:
+                self.statements.bulk_write(operations, ordered=False)
+            except BulkWriteError as err:
+                print("Error: {}, action: {}".format(err, operations))
 
         return statement
 
